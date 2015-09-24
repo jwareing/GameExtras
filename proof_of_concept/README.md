@@ -12,8 +12,10 @@ This is a modified version that deploys to AWS with the following modifications:
 
 2) app.js runs process.env.PORT or fallsback to 3000
 
-3) Add 01_files.config to .ebextensions as per (http://dustinbolton.com/websockets-not-working-on-elastic-beanstalk-with-nodejs-when-using-nginx-as-a-proxy/)[http://dustinbolton.com/websockets-not-working-on-elastic-beanstalk-with-nodejs-when-using-nginx-as-a-proxy/]
+3) Add 01_files.config to .ebextensions as per http://dustinbolton.com/websockets-not-working-on-elastic-beanstalk-with-nodejs-when-using-nginx-as-a-proxy/
 
+
+phonecontrolhr32.elasticbeanstalk.com/controller
 
 # TO Run:
 
