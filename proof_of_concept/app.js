@@ -11,6 +11,9 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/public/index.html');
 });
 
+app.get('/controller', function(req, res){
+  res.sendFile(__dirname + '/public/controller.html');
+});
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -95,9 +98,11 @@ function onMovePlayer(data) {
     return;
   };
 
+console.log("alleged currentX", movePlayer.getX())
+console.log("alleged currentY", movePlayer.getX())
   // Update player position
-  movePlayer.setX(data.x);
-  movePlayer.setY(data.y);
+  movePlayer.setX(movePlayer.getX() + data.x);
+  movePlayer.setY(movePlayer.getY()+ data.y);
 
   // Broadcast updated position to connected socket clients
   this.broadcast.emit("move player", {id: movePlayer.id, x: movePlayer.getX(), y: movePlayer.getY()});

@@ -1,0 +1,55 @@
+<html>
+<h1>This is a game controller</h1>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="/js/game.js"></script>
+
+<button id="createButton">Create Player</button>
+<hr>
+<pre>
+<div>
+<button id="leftButton">Left</button>
+<button id="rightButton">Right</button>
+</div>
+<div>
+<button id="upButton">Up</button>
+<button id="downButton">Down</button>
+</div>
+
+
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+
+<SCRIPT TYPE="text/javascript">
+  $(document).ready(function() {
+      var socket = io();
+
+    $("#createButton").on('click', function(){
+      console.log("Click event");
+      socket.emit('new player', {x:Math.floor(Math.random()*200),y:Math.floor(Math.random()*200)})
+
+    })
+
+    $("#rightButton").on('click', function(){
+      console.log("Click event");
+      socket.emit('move player', {x:2,y:0});
+
+    });
+    $("#leftButton").on('click', function(){
+      console.log("Click event");
+      socket.emit('move player', {x:-1,y:0});
+
+    })
+    
+    $("#upButton").on('click', function(){
+      console.log("Click event");
+      socket.emit('move player', {x:0,y:-1});
+    });
+
+    $("#downButton").on('click', function(){
+      console.log("Click event");
+      socket.emit('move player', {x:0,y:1});
+    });
+    
+  });
+
+</SCRIPT>
+</html>
