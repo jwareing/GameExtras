@@ -15,7 +15,8 @@ This is a modified version that deploys to AWS with the following modifications:
 3) Add 01_files.config to .ebextensions as per http://dustinbolton.com/websockets-not-working-on-elastic-beanstalk-with-nodejs-when-using-nginx-as-a-proxy/
 
 
-phonecontrolhr32.elasticbeanstalk.com/controller
+http://phonecontrolhr32.elasticbeanstalk.com
+http://phonecontrolhr32.elasticbeanstalk.com/controller
 
 # TO Run:
 
