@@ -7,6 +7,11 @@ var path = require('path');
 
 var players = [];
 
+app.get('/game', function(req, res){
+  res.sendFile(__dirname + '/public/client/index.html');
+});
+
+
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/public/index.html');
 });
@@ -15,10 +20,10 @@ app.get('/controller', function(req, res){
   res.sendFile(__dirname + '/public/controller.html');
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public/client')));
 
-app.use('/js', express.static(path.join(__dirname, 'public/js')));
-app.use('/style', express.static(path.join(__dirname, 'public/style')));
+app.use('/js', express.static(path.join(__dirname, 'public/client/js')));
+app.use('/lib', express.static(path.join(__dirname, 'public/client/lib')));
 
 
 io.on('connection', function(socket){
@@ -33,7 +38,7 @@ io.on('connection', function(socket){
 
   socket.on("new player", onNewPlayer);  
 
-  socket.on("move player", onMovePlayer);
+  socket.on("left button", leftButton);
 
 
 });
@@ -47,6 +52,23 @@ server.listen(app.get("port"), function(){
 });
 
 /* Click handler callbacks */
+
+function leftButton(){
+  console.log("A LEFT BUTTON WAS PRESSED!!");
+
+  var movePlayer = playerById(this.id);
+
+  // Player not found
+  // if (!movePlayer) {
+  // console.log("Player not found: "+this.id);
+  // return;
+  // };
+
+  // Broadcast updated position to connected socket clients
+  this.broadcast.emit("left button", {});
+
+}
+
 
 function onClientDisconnect() {
 
