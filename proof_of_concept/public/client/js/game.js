@@ -3,7 +3,6 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, 'gameContainer');
 var socket = io();
 
 
-  // socket.emit("new player", {x: localPlayer.getX(), y: localPlayer.getY()});
 var mainState = {
   preload: function () {
     game.stage.backgroundColor = '#666';
@@ -17,12 +16,12 @@ var mainState = {
     pineapples.enableBody = true;
     //game.physics.enable(pineapples, Phaser.Physics.ARCADE);
 
-
-    this.player = this.game.add.sprite(100, 245, 'player');
-    game.physics.arcade.enable(this.player);
-    this.player.body.gravity.y = 1000; 
-    this.player.body.bounce.y = 0.5;
-    this.player.body.collideWorldBounds = true;
+    //Player ceation handled below
+    // this.player = this.game.add.sprite(100, 245, 'player');
+    // game.physics.arcade.enable(this.player);
+    // this.player.body.gravity.y = 1000; 
+    // this.player.body.bounce.y = 0.5;
+    // this.player.body.collideWorldBounds = true;
     
 
     this.platforms = game.add.group();
@@ -37,7 +36,7 @@ var mainState = {
         this.ground[j].body.immovable = true;
       }
     //Listeners
-    var that = this;
+   // var that = this;
 
 
     socket.on("remove player", function(data){
@@ -94,7 +93,7 @@ var mainState = {
      });
 
     socket.on("down button", function(data){
-          console.log(data.payload)
+          // console.log(data.payload)
           that.player.body.velocity.y = -600;
 
      });
@@ -113,34 +112,46 @@ var mainState = {
      });
   },
   update: function () {
+
+    //Check for collisions between any players and the ground.
+    
     for (var i = 0; i < this.ground.length; i++) {
-      game.physics.arcade.collide(this.player, this.ground[i]);
+      //game.physics.arcade.collide(this.player, this.ground[i]);
       for (var j = 0; j < pineapples.children.length; j++){
         game.physics.arcade.collide(pineapples.children[j], this.ground[i]);
         pineapples.children[j].body.velocity.x = 0;
       }
     }
-    this.player.body.velocity.x = 0;
 
-    var cursors = game.input.keyboard.createCursorKeys();
-    if (cursors.left.isDown)
-    { 
-        socket.emit("left button", {somedata:"some value"});
-        this.player.body.velocity.x = -150;
 
-    }
-    else if (cursors.right.isDown)
-    {
-        this.player.body.velocity.x = 150;
-        // cursors.up.isDown = false;
+/*******************
+Code below handles non-socket inputs. Consider changing input format
+so that controllers only emit on button up/down events, and toggle the 
+status of buttons here in phaser. Then button press consequences would 
+be run in the phaser update loop rather than on socket emit events.
+********************/
 
-    }
-    if (cursors.up.isDown && this.player.body.touching.down)
-    {
-        socket.emit("up button", {somedata:"some value"});
+  //   this.player.body.velocity.x = 0;
 
-        this.player.body.velocity.y = -600;
-    }
+  //   var cursors = game.input.keyboard.createCursorKeys();
+  //   if (cursors.left.isDown)
+  //   { 
+  //       socket.emit("left button", {somedata:"some value"});
+  //       this.player.body.velocity.x = -150;
+
+  //   }
+  //   else if (cursors.right.isDown)
+  //   {
+  //       this.player.body.velocity.x = 150;
+  //       // cursors.up.isDown = false;
+
+  //   }
+  //   if (cursors.up.isDown && this.player.body.touching.down)
+  //   {
+  //       socket.emit("up button", {somedata:"some value"});
+
+  //       this.player.body.velocity.y = -600;
+  //   }
   }
 };
 
