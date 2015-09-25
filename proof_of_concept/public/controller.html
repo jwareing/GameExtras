@@ -1,18 +1,38 @@
 <html>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+
+<div class="container">
+<div class="col-md-12 center-block">
 <h1>This is a game controller</h1>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script type="text/javascript" src="./lib/phaser.min.js"></script>
+    <p>Press "create player" then use buttons or press keyboard buttons to send inputs to main screen</p>
 
-<button id="createButton">Create Player</button>
+<a href="#" id="createButton" class="btn btn-lg btn-default"><span class="glyphicon glyphicon-adjust"></span> Create Player</a>
 <hr>
-<pre>
-<div>
-<button id="leftButton">Left</button>
-<button id="rightButton">Right</button>
+<body>
+
+       <button id="leftButton" class="btn btn-lg btn-warning">LEFT</button>
+    <button type="button"  id="upButton" class="btn btn-lg btn-primary">
+        UP
+      </button>
+  <button type="button" id="rightButton" class="btn btn-lg btn-success">
+        RIGHT
+      </button>
+<style type="text/css">
+  canvas{
+    display: none !important;
+  }
+</style>
+</body>
+
 </div>
-<div>
-<button id="upButton">Up</button>
-<button id="downButton">Down</button>
+</div>
+
+
+
+<!-- <button id="downButton">Down</button> -->
 </div>
 
 
@@ -22,30 +42,30 @@
   $(document).ready(function() {
       var socket = io();
 
-      var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { update:update });
 
+      var game = new Phaser.Game(0, 0, Phaser.AUTO, 'phaser-example', { update:update })
       function update(){
         var cursors = game.input.keyboard.createCursorKeys();
         if (cursors.left.isDown)
         { 
             socket.emit("left button", {somedata:"some value"});
-            this.player.body.velocity.x = -150;
+            
         }
         else if (cursors.right.isDown)
         {
-            this.player.body.velocity.x = 150;
+            socket.emit("right button", {somedata:"some value"});
         }
-        if (cursors.up.isDown && this.player.body.touching.down)
+        if (cursors.up.isDown)
         {
-            socket.emit("up button", {somedata:"some value"});
-
-            this.player.body.velocity.y = -600;
+            socket.emit("up button", {});
+            console.log("firing up...")
         }
       }
 
-    $("#createButton").on('click', function(){
+    $("#createButton").one('click', function(){
       console.log("Click event");
-      socket.emit('new player', {x:Math.floor(Math.random()*200),y:Math.floor(Math.random()*200)})
+      socket.emit('new player', {});
+       $(this).attr('disabled', 'disabled');
 
     })
 

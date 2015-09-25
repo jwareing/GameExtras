@@ -69,7 +69,7 @@ function rightButton(){
   // };
 
   // Broadcast updated position to connected socket clients
-  this.broadcast.emit("right button", {payload:"Hi from server, new update"});
+  this.broadcast.emit("right button", {id:this.id});
 }
 
 function leftButton(){
@@ -84,7 +84,7 @@ function leftButton(){
   // };
 
   // Broadcast updated position to connected socket clients
-  this.broadcast.emit("left button", {payload:"Hi from server, new update"});
+  this.broadcast.emit("left button", {id:this.id});
 }
 
 function upButton(){
@@ -99,7 +99,7 @@ function upButton(){
   // };
 
   // Broadcast updated position to connected socket clients
-  this.broadcast.emit("up button", {payload:"Hi from server, up button pressed"});
+  this.broadcast.emit("up button", {id:this.id});
 
 }
 
@@ -129,7 +129,7 @@ function onNewPlayer(data) {
   newPlayer.id = this.id;
   console.log("\n\n**NEW PLAYER ADDED", this.id);
   // Broadcast new player to connected socket clients
-  this.broadcast.emit("new player", {id: newPlayer.id, x: newPlayer.getX(), y: newPlayer.getY()});
+  this.broadcast.emit("new player", {id: newPlayer.id});
 
   // Send existing players to the new player
   var i, existingPlayer;
