@@ -1,7 +1,7 @@
 <html>
 <h1>This is a game controller</h1>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
-    <script src="/js/game.js"></script>
+    <script type="text/javascript" src="./lib/phaser.min.js"></script>
 
 <button id="createButton">Create Player</button>
 <hr>
@@ -22,6 +22,27 @@
   $(document).ready(function() {
       var socket = io();
 
+      var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { update:update });
+
+      function update(){
+        var cursors = game.input.keyboard.createCursorKeys();
+        if (cursors.left.isDown)
+        { 
+            socket.emit("left button", {somedata:"some value"});
+            this.player.body.velocity.x = -150;
+        }
+        else if (cursors.right.isDown)
+        {
+            this.player.body.velocity.x = 150;
+        }
+        if (cursors.up.isDown && this.player.body.touching.down)
+        {
+            socket.emit("up button", {somedata:"some value"});
+
+            this.player.body.velocity.y = -600;
+        }
+      }
+
     $("#createButton").on('click', function(){
       console.log("Click event");
       socket.emit('new player', {x:Math.floor(Math.random()*200),y:Math.floor(Math.random()*200)})
@@ -30,7 +51,7 @@
 
     $("#rightButton").on('click', function(){
       console.log("Click event");
-      socket.emit('move player', {x:2,y:0});
+      socket.emit('right button', {x:2,y:0});
 
     });
     $("#leftButton").on('click', function(){
@@ -41,12 +62,12 @@
     
     $("#upButton").on('click', function(){
       console.log("Click event");
-      socket.emit('move player', {x:0,y:-1});
+      socket.emit('up button', {x:0,y:-1});
     });
 
     $("#downButton").on('click', function(){
       console.log("Click event");
-      socket.emit('move player', {x:0,y:1});
+      socket.emit('down button', {x:0,y:1});
     });
     
   });

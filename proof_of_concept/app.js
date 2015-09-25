@@ -40,6 +40,11 @@ io.on('connection', function(socket){
 
   socket.on("left button", leftButton);
 
+  socket.on("up button", upButton);
+
+  socket.on("right button", rightButton);
+
+
 
 });
 
@@ -52,6 +57,20 @@ server.listen(app.get("port"), function(){
 });
 
 /* Click handler callbacks */
+function rightButton(){
+  console.log("A RIGHT BUTTON WAS PRESSED!!");
+
+  var movePlayer = playerById(this.id);
+
+  // Player not found
+  // if (!movePlayer) {
+  // console.log("Player not found: "+this.id);
+  // return;
+  // };
+
+  // Broadcast updated position to connected socket clients
+  this.broadcast.emit("right button", {payload:"Hi from server, new update"});
+}
 
 function leftButton(){
   console.log("A LEFT BUTTON WAS PRESSED!!");
@@ -65,9 +84,25 @@ function leftButton(){
   // };
 
   // Broadcast updated position to connected socket clients
-  this.broadcast.emit("left button", {});
+  this.broadcast.emit("left button", {payload:"Hi from server, new update"});
+}
+
+function upButton(){
+  console.log("A LEFT BUTTON WAS PRESSED!!");
+
+  var movePlayer = playerById(this.id);
+
+  // Player not found
+  // if (!movePlayer) {
+  // console.log("Player not found: "+this.id);
+  // return;
+  // };
+
+  // Broadcast updated position to connected socket clients
+  this.broadcast.emit("up button", {payload:"Hi from server, up button pressed"});
 
 }
+
 
 
 function onClientDisconnect() {
