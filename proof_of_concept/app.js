@@ -29,7 +29,7 @@ app.use('/lib', express.static(path.join(__dirname, 'public/client/lib')));
 
 
 /*****************************
-  BUTTON PRESS HANDLERS 
+  SOCKET LISTENERS
 *****************************/
   //This function sets up listeners for events coming from any socket.
   //Tells the srever what kind of event to emit for any event received. 
